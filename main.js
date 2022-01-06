@@ -9,6 +9,9 @@ let db = mysql.createConnection({
   database: "safestock",
 });
 
+// cors error
+// 왜 요청 데이터를 못받냐
+
 let app = http.createServer(function (request, response) {
   const headers = {
     "Access-Control-Allow-Origin": "*",
@@ -23,12 +26,12 @@ let app = http.createServer(function (request, response) {
 
   let pathname_split = pathname.split("/");
 
-  if (pathname_split.length === 0) {
+  if (pathname_split.length === 1) {
     if (queryData.id === undefined) {
     } else {
     }
-  } else if (pathname_split[0] === "member") {
-    if (pathname_split.length === 1) {
+  } else if (pathname_split[1] === "member") {
+    if (pathname_split.length === 2) {
       if (request.method === "GET") {
         console.log("1");
       } else if (request.method === "POST") {
@@ -36,13 +39,14 @@ let app = http.createServer(function (request, response) {
       } else if (request.method === "DELETE") {
       }
     } else {
-      if (pathname_split[1] === "signup") {
-      } else if (pathname_split[1] === "allmember") {
-      } else if (pathname_split[1] === "edit") {
-      } else if (pathname_split[1] === "login") {
+      if (pathname_split[2] === "signup") {
+      } else if (pathname_split[2] === "allmember") {
+      } else if (pathname_split[2] === "edit") {
+      } else if (pathname_split[2] === "login") {
         let body = "";
         request.on("data", function (data) {
           body += data;
+          console.log(data);
         });
         console.log("-----------------");
         console.log(body);
