@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/simba155kor/StockSafe_Nodejs#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "mysql": "^2.18.1",
     "sanitize-html": "^2.6.1",
     "swagger": "^0.7.5"
