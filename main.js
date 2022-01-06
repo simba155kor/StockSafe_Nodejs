@@ -1,6 +1,7 @@
 let http = require('http');
 let url = require('url');
 let mysql = require('mysql');
+let aajs = require('./lib/aa.js');
 
 let app = http.createServer(function(request,response){
     let _url = request.url;
@@ -16,6 +17,10 @@ let app = http.createServer(function(request,response){
       topic.create(request, response);
     } else if(pathname === '/create_process'){
       topic.create_process(request, response);
+    } else if(pathname === '/Likestock'){
+        if(request.method == "GET") aajs.get();
+        else if(request.method == "UPDATE") aajs.update();
+        
     } else {
       response.writeHead(404);
       response.end('Not found');
