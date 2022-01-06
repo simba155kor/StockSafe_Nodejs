@@ -9,6 +9,9 @@ let db = mysql.createConnection({
   database: "safestock",
 });
 
+// cors error
+// 왜 요청 데이터를 못받냐
+
 let app = http.createServer(function (request, response) {
   const headers = {
     "Access-Control-Allow-Origin": "*",
@@ -44,6 +47,7 @@ let app = http.createServer(function (request, response) {
         let body = "";
         request.on("data", function (data) {
           body += data;
+          console.log(data);
         });
         console.log("-----------------");
         console.log(body);
