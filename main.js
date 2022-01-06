@@ -22,13 +22,14 @@ let app = http.createServer(function (request, response) {
   let pathname = url.parse(_url, true).pathname;
 
   let pathname_split = pathname.split("/");
-
-  if (pathname_split.length === 0) {
+  console.log(pathname_split);
+  if (pathname_split.length === 1) {
     if (queryData.id === undefined) {
     } else {
     }
-  } else if (pathname_split[0] === "member") {
-    if (pathname_split.length === 1) {
+  } else if (pathname_split[1] === "member") {
+      console.log("2");
+    if (pathname_split.length === 2) {
       if (request.method === "GET") {
         console.log("1");
       } else if (request.method === "POST") {
@@ -36,10 +37,10 @@ let app = http.createServer(function (request, response) {
       } else if (request.method === "DELETE") {
       }
     } else {
-      if (pathname_split[1] === "signup") {
-      } else if (pathname_split[1] === "allmember") {
-      } else if (pathname_split[1] === "edit") {
-      } else if (pathname_split[1] === "login") {
+      if (pathname_split[2] === "signup") {
+      } else if (pathname_split[2] === "allmember") {
+      } else if (pathname_split[2] === "edit") {
+      } else if (pathname_split[2] === "login") {
         let body = "";
         request.on("data", function (data) {
           body += data;
@@ -53,34 +54,34 @@ let app = http.createServer(function (request, response) {
         // select member_name
         // from member
         // where id=? and member_pw=?`,[body.id, body.memberPw])
-      } else if (pathname_split[1] === "findPW") {
+      } else if (pathname_split[2] === "findPW") {
       }
     }
-  } else if (pathname_split[0] === "memberstock") {
+  } else if (pathname_split[1] === "memberstock") {
     if (request.method === "GET") {
     } else if (request.method === "POST") {
     } else if (request.method === "DELETE") {
     }
-  } else if (pathname_split[0] === "news") {
+  } else if (pathname_split[1] === "news") {
     if (request.method === "GET") {
     } else if (request.method === "POST") {
     } else if (request.method === "DELETE") {
     }
-  } else if (pathname_split[0] === "reply") {
+  } else if (pathname_split[1] === "reply") {
     if (request.method === "GET") {
     } else if (request.method === "POST") {
     } else if (request.method === "PUT") {
     } else if (request.method === "DELETE") {
     }
-  } else if (pathname_split[0] === "stock") {
-    if (pathname_split.length === 1) {
+  } else if (pathname_split[1] === "stock") {
+    if (pathname_split.length === 2) {
       if (request.method === "GET") {
       } else if (request.method === "POST") {
       } else if (request.method === "PUT") {
       } else if (request.method === "DELETE") {
       }
     } else {
-      if (pathname_split[1] === "searchAll") {
+      if (pathname_split[2] === "searchAll") {
       }
     }
   } else {
