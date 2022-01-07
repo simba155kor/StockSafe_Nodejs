@@ -5,18 +5,20 @@ let aajs = require("./lib/aa.js");
 let db = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "ssafy",
-  database: "safestock",
+  password: "122333",
+  database: "stocksafe_db",
 });
 
 // cors error
 // 왜 요청 데이터를 못받냐
+
 
 let app = http.createServer(function (request, response) {
   const headers = {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Methods": "OPTIONS, POST, GET",
     "Access-Control-Max-Age": 2592000, // 30 days
+    "Access-Control-Allow-Headers": "*"
     /** add other headers as per requirement */
   };
 
@@ -35,6 +37,10 @@ let app = http.createServer(function (request, response) {
     if (pathname_split.length === 2) {
       if (request.method === "GET") {
         console.log("1");
+        db.query(`select * from member`, function(error, data){
+          console.log(request);
+          console.log(data);
+        })
       } else if (request.method === "POST") {
       } else if (request.method === "PUT") {
       } else if (request.method === "DELETE") {
@@ -44,20 +50,42 @@ let app = http.createServer(function (request, response) {
       } else if (pathname_split[2] === "allmember") {
       } else if (pathname_split[2] === "edit") {
       } else if (pathname_split[2] === "login") {
-        let body = "";
-        request.on("data", function (data) {
-          body += data;
-          console.log(data);
-        });
-        console.log("-----------------");
-        console.log(body);
+        if(request.method === "POST"){
+          let body = [];
+          request.on('data', (chunk) => {
+            body.push(chunk);
 
-        response.writeHead(200, headers);
-        response.end();
-        // db.query(`
-        // select member_name
-        // from member
-        // where id=? and member_pw=?`,[body.id, body.memberPw])
+          }).on('end', () => {
+            body = Buffer.concat(body).toString();
+            // 여기서 `body`에 전체 요청 바디가 문자열로 담겨있습니다.
+            console.log(body);
+          });
+          console.log(request);
+          db.query(`
+        select member_name
+        from member
+        where id="a" and member_pw="a"`, function(error, data){
+          console.log(data);
+          response.writeHead(200, headers);
+          response.write('hello');
+          response.end('hello2');
+          });
+        }
+        else if(request.method === "OPTIONS"){
+          console.log('options!');
+          response.writeHead(200, headers);
+          response.end();
+        }
+        else{
+          //console.log(request);
+          let body = "";
+          request.on("data", function (data) {
+            body += data;
+            console.log(data);
+          });
+          console.log("-----------------");
+          console.log(body);
+        }
       } else if (pathname_split[2] === "findPW") {
       }
     }
@@ -86,6 +114,9 @@ let app = http.createServer(function (request, response) {
       }
     } else {
       if (pathname_split[2] === "searchAll") {
+        console.log("!");
+        response.writeHead(302, {Location : `/`});
+        response.end();
       }
     }
   } else {
@@ -93,4 +124,4 @@ let app = http.createServer(function (request, response) {
     response.end("Not found");
   }
 });
-app.listen(3000);
+app.listen(9999);
