@@ -79,22 +79,9 @@ let app = http.createServer(function (request, response) {
     } else if (request.method === "PUT") {
     } else if (request.method === "DELETE") {
     }
-  } else if (pathname_split[1] === "stock") {
-    if (pathname_split.length === 2) {
-      if (request.method === "GET") {
-      } else if (request.method === "POST") {
-      } else if (request.method === "PUT") {
-      } else if (request.method === "DELETE") {
-      }
-    } else {
-      if (pathname_split[2] === "searchAll") {
-        console.log("!");
-        response.writeHead(302, { Location: `/` });
-        response.end();
-      }
-    }
+  } else if (pathname_split[1] === "stock") { 
   } else {
-    console.log("!>");
+    console.log(path);
     response.writeHead(404, " ");
     response.end("Not found");
   }
