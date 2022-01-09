@@ -3,7 +3,8 @@ let url = require("url");
 let mysql = require("./lib/mysql.js");
 let member = require("./lib/member.js");
 let likestock = require("./lib/likestock.js");
-
+let stock = require("./lib/stock.js");
+let reply = require("./lib/reply.js");
 
 // cors error
 // 왜 요청 데이터를 못받냐
@@ -99,6 +100,29 @@ let app = http.createServer(function (request, response) {
     }
     
   } else if (pathname_split[1] === "stock") { 
+    if (request.method === "GET") {
+      if(pathname_split[2] === "searchAll"){
+        console.log("All---------");
+        let keyword = queryData.keyword;
+        stock.readStockAll(mysql.db, keyword, response);
+      }else{
+        console.log("Detail---------");
+        let id = queryData.id;
+        stock.readStockDetail(mysql.db, id, response);
+      }
+    } else if (request.method === "POST") {
+      console.log("POST---------");
+      stock.createStock(mysql.db, request, response);
+    } else if (request.method === "UPDATE") {
+      console.log("UPDATE---------");
+      stock.updateStock(mysql.db, request, response);
+    } else if (request.method === "DELETE") {
+      console.log("DELETE---------");
+      stock.deleteStock(mysql.db, request, response);
+    } else if (request.method === "OPTIONS"){
+      response.writeHead(204, headers);
+      response.end();
+    }
   } else {
     console.log(path);
     response.writeHead(404, " ");
