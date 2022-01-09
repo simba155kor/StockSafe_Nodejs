@@ -54,21 +54,33 @@ let app = http.createServer(function (request, response) {
           let body = [];
           request.on('data', (chunk) => {
             body.push(chunk);
-
           }).on('end', () => {
             body = Buffer.concat(body).toString();
+            body = JSON.parse(body);
             // 여기서 `body`에 전체 요청 바디가 문자열로 담겨있습니다.
             console.log(body);
-          });
-          console.log(request);
-          db.query(`
+            console.log(body.id);
+            console.log(body.memberPw);
+            console.log("!!!!");
+            db.query(`
         select member_name
         from member
-        where id="a" and member_pw="a"`, function(error, data){
+        where id=? and member_pw=?`, [body.id, body.memberPw], function(error, data){
           console.log(data);
+          console.log("!!");
+          if(data.length === 1){
+            console.log(data);
           response.writeHead(200, headers);
-          response.write('hello');
-          response.end('hello2');
+          response.write(data[0].member_name);
+          response.end();
+          }
+          else{
+            console.log('fail!');
+            response.writeHead(204, headers);
+            response.write("fail");
+            response.end();
+          }
+             });
           });
         }
         else if(request.method === "OPTIONS"){
