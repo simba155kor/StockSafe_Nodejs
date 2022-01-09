@@ -2,16 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<configuration>        
-    <settings>        
-        <setting name="mapUnderscoreToCamelCase" value="true" />
-    </settings>    
-</configuration>
-
+<!-- id: (...)
+memberId: (...)
+predictDay: (...)
+predictGraph: (...)
+predictId: (...)
+predictMonth: (...)
+predictYear: (...)
+stockName: (...)
+stockYesterday: (...) -->
 <mapper namespace="LikeStockMapper">
 
 	<select id="readLikeStock" > 
-		select *
+		select m.id, member_id, predict_day, predict_graph, predict_id, predict_month, predict_year, stock_name, stock_yesterday
 		from likeStock m
 		join predict p
 		on m.predict_id = p.id
