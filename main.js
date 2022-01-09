@@ -1,14 +1,15 @@
 let http = require("http");
 let url = require("url");
 let mysql = require("mysql");
-let aajs = require("./lib/aa.js");
 let member = require("./lib/member.js");
-let likestock = require("./lib/likestock.js");
+// let likestock = require("./lib/likestock.js");
+let stock = require("./lib/stock.js");
+let reply = require("./lib/reply.js");
 
 let db = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "122333",
+  password: "root",
   database: "stocksafe_db",
 });
 
@@ -54,7 +55,7 @@ let app = http.createServer(function (request, response) {
       } else if (pathname_split[2] === "login") {
         if (request.method === "POST") {
           console.log("11");
-          member.login(db, request, response);
+          // member.login(db, request, response);
         } else if (request.method === "OPTIONS") {
           console.log("options!");
           response.writeHead(200, headers);
@@ -92,20 +93,43 @@ let app = http.createServer(function (request, response) {
     } else if (request.method === "DELETE") {
     }
   } else if (pathname_split[1] === "likestock") {
-    console.log("?");
-    //console.log(request);
+    // console.log("?");
+    // //console.log(request);
+    // if (request.method === "GET") {
+    //   console.log("!");
+    //   likestock.readLikeStock(db, request, response);
+    // } else if (request.method === "POST") {
+    //   likestock.createLikeStock(db, request, response);
+    // } else if (request.method === "DELETE") {
+    // } else if (request.method === "OPTIONS"){
+    //   response.writeHead(204, headers);
+    //   response.end();
+    // }
+    
+  } else if (pathname_split[1] === "stock") { 
     if (request.method === "GET") {
-      console.log("!");
-      likestock.readLikeStock(db, request, response);
+      if(pathname_split[2] === "searchAll"){
+        console.log("All---------");
+        let keyword = queryData.keyword;
+        stock.readStockAll(db, keyword, response);
+      }else{
+        console.log("Detail---------");
+        let id = queryData.id;
+        stock.readStockDetail(db, id, response);
+      }
     } else if (request.method === "POST") {
-      likestock.createLikeStock(db, request, response);
+      console.log("POST---------");
+      stock.createStock(db, request, response);
+    } else if (request.method === "UPDATE") {
+      console.log("UPDATE---------");
+      stock.updateStock(db, request, response);
     } else if (request.method === "DELETE") {
+      console.log("DELETE---------");
+      stock.deleteStock(db, request, response);
     } else if (request.method === "OPTIONS"){
       response.writeHead(204, headers);
       response.end();
     }
-    
-  } else if (pathname_split[1] === "stock") { 
   } else {
     console.log(path);
     response.writeHead(404, " ");
