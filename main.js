@@ -3,6 +3,8 @@ let url = require("url");
 let mysql = require("mysql");
 let aajs = require("./lib/aa.js");
 let member = require("./lib/member.js");
+let likestock = require("./lib/likestock.js");
+
 let db = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -14,11 +16,18 @@ let db = mysql.createConnection({
 // 왜 요청 데이터를 못받냐
 
 let app = http.createServer(function (request, response) {
+  const headers = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "OPTIONS, POST, DELETE, UPDATE, GET",
+    "Access-Control-Max-Age": 2592000, // 30 days
+    "Access-Control-Allow-Headers": "*"
+    /** add other headers as per requirement */
+  };
+
   let _url = request.url;
   let queryData = url.parse(_url, true).query;
   let pathname = url.parse(_url, true).pathname;
 
-  // "/"
   let pathname_split = pathname.split("/");
   console.log(pathname_split);
   if (pathname_split.length === 1) {
@@ -67,6 +76,9 @@ let app = http.createServer(function (request, response) {
     if (request.method === "GET") {
     } else if (request.method === "POST") {
     } else if (request.method === "DELETE") {
+    } else if (request.method === "OPTIONS"){
+      response.writeHead(204, headers);
+      response.end();
     }
   } else if (pathname_split[1] === "news") {
     if (request.method === "GET") {
@@ -79,6 +91,20 @@ let app = http.createServer(function (request, response) {
     } else if (request.method === "PUT") {
     } else if (request.method === "DELETE") {
     }
+  } else if (pathname_split[1] === "likestock") {
+    console.log("?");
+    //console.log(request);
+    if (request.method === "GET") {
+      console.log("!");
+      likestock.readLikeStock(db, request, response);
+    } else if (request.method === "POST") {
+      likestock.createLikeStock(db, request, response);
+    } else if (request.method === "DELETE") {
+    } else if (request.method === "OPTIONS"){
+      response.writeHead(204, headers);
+      response.end();
+    }
+    
   } else if (pathname_split[1] === "stock") { 
   } else {
     console.log(path);
