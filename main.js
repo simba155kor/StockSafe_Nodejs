@@ -1,17 +1,10 @@
 let http = require("http");
 let url = require("url");
-let mysql = require("mysql");
+let mysql = require("./lib/mysql.js");
 let member = require("./lib/member.js");
-// let likestock = require("./lib/likestock.js");
+let likestock = require("./lib/likestock.js");
 let stock = require("./lib/stock.js");
 let reply = require("./lib/reply.js");
-
-let db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "root",
-  database: "stocksafe_db",
-});
 
 // cors error
 // 왜 요청 데이터를 못받냐
@@ -40,7 +33,7 @@ let app = http.createServer(function (request, response) {
     if (pathname_split.length === 2) {
       if (request.method === "GET") {
         console.log("1");
-        db.query(`select * from member`, function (error, data) {
+        mysql.db.query(`select * from member`, function (error, data) {
           console.log(request);
           console.log(data);
         });
@@ -55,7 +48,7 @@ let app = http.createServer(function (request, response) {
       } else if (pathname_split[2] === "login") {
         if (request.method === "POST") {
           console.log("11");
-          // member.login(db, request, response);
+          member.login(mysql.db, request, response);
         } else if (request.method === "OPTIONS") {
           console.log("options!");
           response.writeHead(200, headers);
@@ -93,39 +86,39 @@ let app = http.createServer(function (request, response) {
     } else if (request.method === "DELETE") {
     }
   } else if (pathname_split[1] === "likestock") {
-    // console.log("?");
-    // //console.log(request);
-    // if (request.method === "GET") {
-    //   console.log("!");
-    //   likestock.readLikeStock(db, request, response);
-    // } else if (request.method === "POST") {
-    //   likestock.createLikeStock(db, request, response);
-    // } else if (request.method === "DELETE") {
-    // } else if (request.method === "OPTIONS"){
-    //   response.writeHead(204, headers);
-    //   response.end();
-    // }
+    console.log("?");
+    //console.log(request);
+    if (request.method === "GET") {
+      console.log("!");
+      likestock.readLikeStock(mysql.db, request, response);
+    } else if (request.method === "POST") {
+      likestock.createLikeStock(mysql.db, request, response);
+    } else if (request.method === "DELETE") {
+    } else if (request.method === "OPTIONS"){
+      response.writeHead(204, headers);
+      response.end();
+    }
     
   } else if (pathname_split[1] === "stock") { 
     if (request.method === "GET") {
       if(pathname_split[2] === "searchAll"){
         console.log("All---------");
         let keyword = queryData.keyword;
-        stock.readStockAll(db, keyword, response);
+        stock.readStockAll(mysql.db, keyword, response);
       }else{
         console.log("Detail---------");
         let id = queryData.id;
-        stock.readStockDetail(db, id, response);
+        stock.readStockDetail(mysql.db, id, response);
       }
     } else if (request.method === "POST") {
       console.log("POST---------");
-      stock.createStock(db, request, response);
+      stock.createStock(mysql.db, request, response);
     } else if (request.method === "UPDATE") {
       console.log("UPDATE---------");
-      stock.updateStock(db, request, response);
+      stock.updateStock(mysql.db, request, response);
     } else if (request.method === "DELETE") {
       console.log("DELETE---------");
-      stock.deleteStock(db, request, response);
+      stock.deleteStock(mysql.db, request, response);
     } else if (request.method === "OPTIONS"){
       response.writeHead(204, headers);
       response.end();
