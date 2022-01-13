@@ -109,8 +109,10 @@ let app = http.createServer(function (request, response) {
         stock.readStockAll(mysql.db, keyword, response);
       }else{
         console.log("Detail---------");
-        let id = queryData.id;
-        stock.readStockDetail(mysql.db, id, response);
+//        let id = queryData.id;
+//        stock.readStockDetail(mysql.db, id, response);
+          stock.readStockDetail(mysql.db, request, response);
+          console.log(response);
       }
     } else if (request.method === "POST") {
       console.log("POST---------");
