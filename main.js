@@ -6,6 +6,7 @@ let likestock = require("./lib/likestock.js");
 let memberstock = require("./lib/memberstock.js");
 let stock = require("./lib/stock.js");
 let reply = require("./lib/reply.js");
+let news = require("./lib/news.js");
 
 // cors error
 // 왜 요청 데이터를 못받냐
@@ -30,29 +31,38 @@ let app = http.createServer(function (request, response) {
     } else {
     }
   } else if (pathname_split[1] === "member") {
-    console.log("2");
     if (pathname_split.length === 2) {
       if (request.method === "GET") {
-        console.log("1");
-        mysql.db.query(`select * from member`, function (error, data) {
-          console.log(request);
-          console.log(data);
-        });
+        member.readMember(mysql.db, request, response);
       } else if (request.method === "POST") {
       } else if (request.method === "PUT") {
       } else if (request.method === "DELETE") {
-      }
+      } else if (request.method === "OPTIONS") {
+        response.writeHead(204, headers);
+        response.end();
+      } 
     } else {
       if (pathname_split[2] === "signup") {
+        if (request.method === "POST") {
+          member.createMember(mysql.db, request, response);
+        } else if (request.method === "OPTIONS") {
+          response.writeHead(204, headers);
+          response.end();
+        } 
       } else if (pathname_split[2] === "allmember") {
+        member.readMemberAll(mysql.db, request, response);
       } else if (pathname_split[2] === "edit") {
+        if (request.method === "PUT") {
+          member.updateMember(mysql.db, request, response);
+        } else if (request.method === "OPTIONS") {
+          response.writeHead(204, headers);
+          response.end();
+        }
       } else if (pathname_split[2] === "login") {
         if (request.method === "POST") {
-          console.log("11");
-          member.login(mysql.db, request, response);
+          member.loginMember(mysql.db, request, response);
         } else if (request.method === "OPTIONS") {
-          console.log("options!");
-          response.writeHead(200, headers);
+          response.writeHead(204, headers);
           response.end();
         } else {
           //console.log(request);
@@ -72,23 +82,34 @@ let app = http.createServer(function (request, response) {
       console.log("!");
       memberstock.readMemberStock(mysql.db, request, response);
     } else if (request.method === "POST") {
+      memberstock.createMemberStock(mysql.db, request, response);
     } else if (request.method === "DELETE") {
+      memberstock.deleteMemberStock(mysql.db, request, response);
     } else if (request.method === "OPTIONS"){
       response.writeHead(204, headers);
       response.end();
     }
   } else if (pathname_split[1] === "news") {
     if (request.method === "GET") {
+      news.readStockNews(mysql.db, request, response);
     } else if (request.method === "POST") {
+      news.createNews(mysql.db, request, response);
     } else if (request.method === "DELETE") {
+    } else if (request.method === "OPTIONS"){
+      response.writeHead(204, headers);
+      response.end();
     }
   } else if (pathname_split[1] === "reply") {
     if (request.method === "GET") {
+      console.log("read reply");
       reply.readAllReply(mysql.db, request, response);
     } else if (request.method === "POST") {
       reply.createReply(mysql.db, request, response);
     } else if (request.method === "PUT") {
     } else if (request.method === "DELETE") {
+    } else if (request.method === "OPTIONS"){
+      response.writeHead(204, headers);
+      response.end();
     }
   } else if (pathname_split[1] === "likestock") {
     if (request.method === "GET") {
@@ -97,6 +118,7 @@ let app = http.createServer(function (request, response) {
     } else if (request.method === "POST") {
       likestock.createLikeStock(mysql.db, request, response);
     } else if (request.method === "DELETE") {
+      likestock.deleteLikeStock(mysql.db, request, response);
     } else if (request.method === "OPTIONS"){
       response.writeHead(204, headers);
       response.end();
@@ -106,7 +128,7 @@ let app = http.createServer(function (request, response) {
       if(pathname_split[2] === "searchAll"){
         stock.readStockAll(mysql.db, request, response);
       }else{
-          stock.readStockDetail(mysql.db, request, response);
+        stock.readStockDetail(mysql.db, request, response);
       }
     } else if (request.method === "POST") {
       stock.createStock(mysql.db, request, response);
