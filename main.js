@@ -89,8 +89,6 @@ let app = http.createServer(function (request, response) {
     } else if (request.method === "DELETE") {
     }
   } else if (pathname_split[1] === "likestock") {
-    console.log("?");
-    //console.log(request);
     if (request.method === "GET") {
       console.log("!");
       likestock.readLikeStock(mysql.db, request, response);
@@ -104,24 +102,16 @@ let app = http.createServer(function (request, response) {
   } else if (pathname_split[1] === "stock") { 
     if (request.method === "GET") {
       if(pathname_split[2] === "searchAll"){
-        console.log("All---------");
-        let keyword = queryData.keyword;
-        stock.readStockAll(mysql.db, keyword, response);
+        // let keyword = queryData.keyword;
+        stock.readStockAll(mysql.db, request, response);
       }else{
-        console.log("Detail---------");
-//        let id = queryData.id;
-//        stock.readStockDetail(mysql.db, id, response);
           stock.readStockDetail(mysql.db, request, response);
-          console.log(response);
       }
     } else if (request.method === "POST") {
-      console.log("POST---------");
       stock.createStock(mysql.db, request, response);
     } else if (request.method === "UPDATE") {
-      console.log("UPDATE---------");
       stock.updateStock(mysql.db, request, response);
     } else if (request.method === "DELETE") {
-      console.log("DELETE---------");
       stock.deleteStock(mysql.db, request, response);
     } else if (request.method === "OPTIONS"){
       response.writeHead(204, headers);

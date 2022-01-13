@@ -21,7 +21,7 @@
 	</select>
 	
 	
-	<delete id="deleteMemberStock" parameterType="MemberStockDto">
+	<delete id="deleteMemberStock" >
 		delete from memberStock
 		where member_id=#{memberId} and predict_id=#{predictId};
 	</delete>
