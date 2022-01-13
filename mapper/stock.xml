@@ -5,6 +5,8 @@
  
  <mapper namespace="StockMapper">
  	
+
+
  	<insert id="createStock">
  		insert into stock(id, stock_name, stock_market, stock_sector, stock_wics, stock_marketcap, stock_count,
  		stock_foreigner, stock_per, stock_pbr, stock_bps,stock_divyield)
@@ -22,7 +24,7 @@
 	</select>
  	
  	<select id="readStockDetail">
-		select id, stock_name, stock_market, stock_sector, stock_wics, stock_marketcap, stock_count, stock_foreigner, stock_per, stock_pbr, stock_bps, stock_divyield
+		select *
 		from stock s
 		where s.id=#{id}
 	</select>
