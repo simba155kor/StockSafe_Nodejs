@@ -84,7 +84,9 @@ let app = http.createServer(function (request, response) {
     }
   } else if (pathname_split[1] === "reply") {
     if (request.method === "GET") {
+      reply.readAllReply(mysql.db, request, response);
     } else if (request.method === "POST") {
+      reply.createReply(mysql.db, request, response);
     } else if (request.method === "PUT") {
     } else if (request.method === "DELETE") {
     }
@@ -105,8 +107,8 @@ let app = http.createServer(function (request, response) {
     if (request.method === "GET") {
       if(pathname_split[2] === "searchAll"){
         console.log("All---------");
-        let keyword = queryData.keyword;
-        stock.readStockAll(mysql.db, keyword, response);
+//        let keyword = queryData.keyword;
+        stock.readStockAll(mysql.db, request, response);
       }else{
         console.log("Detail---------");
 //        let id = queryData.id;
