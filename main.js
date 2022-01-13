@@ -3,6 +3,7 @@ let url = require("url");
 let mysql = require("./lib/mysql.js");
 let member = require("./lib/member.js");
 let likestock = require("./lib/likestock.js");
+let memberstock = require("./lib/memberstock.js");
 let stock = require("./lib/stock.js");
 let reply = require("./lib/reply.js");
 
@@ -68,6 +69,8 @@ let app = http.createServer(function (request, response) {
     }
   } else if (pathname_split[1] === "memberstock") {
     if (request.method === "GET") {
+      console.log("!");
+      memberstock.readMemberStock(mysql.db, request, response);
     } else if (request.method === "POST") {
     } else if (request.method === "DELETE") {
     } else if (request.method === "OPTIONS"){
@@ -98,7 +101,6 @@ let app = http.createServer(function (request, response) {
       response.writeHead(204, headers);
       response.end();
     }
-    
   } else if (pathname_split[1] === "stock") { 
     if (request.method === "GET") {
       if(pathname_split[2] === "searchAll"){
