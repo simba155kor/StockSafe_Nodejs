@@ -65,21 +65,16 @@ let app = http.createServer(function (request, response) {
           response.writeHead(204, headers);
           response.end();
         } else {
-          //console.log(request);
           let body = "";
           request.on("data", function (data) {
             body += data;
-            console.log(data);
           });
-          console.log("-----------------");
-          console.log(body);
         }
       } else if (pathname_split[2] === "findPW") {
       }
     }
   } else if (pathname_split[1] === "memberstock") {
     if (request.method === "GET") {
-      console.log("!");
       memberstock.readMemberStock(mysql.db, request, response);
     } else if (request.method === "POST") {
       memberstock.createMemberStock(mysql.db, request, response);
@@ -101,7 +96,6 @@ let app = http.createServer(function (request, response) {
     }
   } else if (pathname_split[1] === "reply") {
     if (request.method === "GET") {
-      console.log("read reply");
       reply.readAllReply(mysql.db, request, response);
     } else if (request.method === "POST") {
       reply.createReply(mysql.db, request, response);
@@ -113,7 +107,6 @@ let app = http.createServer(function (request, response) {
     }
   } else if (pathname_split[1] === "likestock") {
     if (request.method === "GET") {
-      console.log("!");
       likestock.readLikeStock(mysql.db, request, response);
     } else if (request.method === "POST") {
       likestock.createLikeStock(mysql.db, request, response);
@@ -141,7 +134,6 @@ let app = http.createServer(function (request, response) {
       response.end();
     }
   } else {
-    console.log(path);
     response.writeHead(404, " ");
     response.end("Not found");
   }
