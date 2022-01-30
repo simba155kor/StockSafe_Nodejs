@@ -7,5 +7,5 @@
 |mybatis-mapper|^0.6.5 |
 |mysql|^2.18.1 |
 |sanitize-html|^2.6.1 |
-|swagger|^0.7.5 |
+|swagger|^0.7.5  |
 
